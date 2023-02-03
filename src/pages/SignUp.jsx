@@ -1,11 +1,30 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 
 export default function SignUp() {
-  const [err, setErr] = useState(false);
+  const [body, setBody] = useState(undefined);
+
+  const { isLoading, isError } = useQuery({
+    queryKey: ["signUp"],
+    queryFn: async () => {
+      const res = await fetch("https://api.react-learning.ru/signup", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      const responce = await res.json();
+
+      return responce;
+    },
+    enabled: body !== undefined,
+  });
+
   const navigate = useNavigate();
-  const { setCurrentUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,25 +33,12 @@ export default function SignUp() {
     const group = e.target[2].value;
     const password = e.target[3].value;
     const obj = { name, email, group, password };
-    try {
-      const res = await fetch("https://api.react-learning.ru/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(obj),
-      });
-
-      const responce = await res.json();
-      setCurrentUser(responce);
-      if (res.ok) {
-        navigate("/");
-      }
-    } catch (err) {
-      setErr(true);
-    }
+    setBody(obj);
   };
+
+  if (!isLoading) {
+    navigate("/login");
+  }
 
   return (
     <div className="formContainer">
@@ -45,7 +51,7 @@ export default function SignUp() {
           <input type="text" placeholder="Группа" />
           <input type="password" placeholder="Пароль" />
           <button>Зарегистрироваться</button>
-          {err && <span>Что-то пошло не так</span>}
+          {isError && <span>Что-то пошло не так</span>}
         </form>
         <p>
           Уже есть аккаунт? <Link to="/login">Войти</Link>

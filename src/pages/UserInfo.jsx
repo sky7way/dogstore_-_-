@@ -1,9 +1,26 @@
 import React from "react";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 export default function UserInfo() {
-  const { currentUser } = useContext(AuthContext);
+  const { data: currentUser } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: async () => {
+      const res = await fetch(
+        "https://api.react-learning.ru/v2/gr-9/users/me",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const responce = await res.json();
+
+      return responce;
+    },
+  });
 
   return (
     <div className="info">

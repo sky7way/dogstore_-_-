@@ -1,47 +1,37 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 import Product from "../components/Product";
 import Skeleton from "../components/Skeleton";
 import logoSvg from "../img/v987-11a.jpg";
 import logo from "../img/icons8-user-100.png";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 export default function Home() {
-  const [status, setStatus] = useState(false);
-  const [items, setItems] = useState({});
-  useEffect(() => {
-    try {
-      const getProducts = async () => {
-        setStatus("loading");
-        const res = await fetch("https://api.react-learning.ru/products", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
-        const responce = await res.json();
+  const getProducts = async () => {
+    const res = await fetch("https://api.react-learning.ru/products", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    const responce = await res.json();
+    return responce;
+  };
 
-        setItems(responce);
-        setStatus("success");
-      };
-
-      getProducts();
-    } catch (error) {
-      setStatus("error");
-    }
-  }, []);
+  const {
+    data: items,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
 
   const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
   // .filter((item) => {
   //   return item.title.toLowerCase().includes(search.toLowerCase());
   // })
-  let products;
-  if (items.products) {
-    products = items.products.map((obj) => {
-      return <Product key={obj._id} {...obj} />;
-    });
-  }
 
   return (
     <>
@@ -63,7 +53,7 @@ export default function Home() {
       </div>
       <div className="container">
         <div className="content">
-          {status === "error" ? (
+          {isError ? (
             <div className="content__error">
               <h2>
                 Ничего не найден<span>😕</span>
@@ -78,7 +68,11 @@ export default function Home() {
             <>
               <h2 className="content__title">Все товары ({items?.total})</h2>
               <div className="content__items">
-                {status === "loading" ? skeletons : products}
+                {isLoading
+                  ? skeletons
+                  : items.products.map((obj) => {
+                      return <Product key={obj._id} {...obj} />;
+                    })}
               </div>
             </>
           )}
