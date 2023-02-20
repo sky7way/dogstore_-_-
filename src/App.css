@@ -230,3 +230,24 @@ p {
   border: 2px solid rgb(223, 112, 38);
   color: black;
 }
+
+.search {
+  position: relative;
+  left: 175px;
+}
+.search__input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px 20px;
+  width: 400px;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.15s ease-in-out;
+}
+
+.search i {
+  position: absolute;
+  right: 6px;
+  top: 9px;
+  color: rgba(0, 0, 0, 0.26);
+  font-size: 23px;
+}

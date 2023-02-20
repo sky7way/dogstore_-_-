@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { changeToken } from "../Redux/Slices/userReducer";
 export default function SignIn() {
   const [body, setBody] = useState(undefined);
+
+  const dispatch = useDispatch();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["signIn"],
@@ -28,6 +31,7 @@ export default function SignIn() {
 
   if (!isLoading) {
     localStorage.setItem("token", data.token);
+    dispatch(changeToken(data.token));
     navigate("/");
   }
 

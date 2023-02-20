@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Product from "../components/Product";
 import Skeleton from "../components/Skeleton";
 import logoSvg from "../img/v987-11a.jpg";
 import logo from "../img/icons8-user-100.png";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import Search from "../components/Search";
+import { useSelector } from "react-redux";
+
 export default function Home() {
+  const [search, setSearch] = useState("");
+  const token = useSelector((state) => state.user.token);
+
   const getProducts = async () => {
     const res = await fetch("https://api.react-learning.ru/products", {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + token,
       },
     });
     const responce = await res.json();
@@ -43,6 +49,7 @@ export default function Home() {
               <h1>Dog Store</h1>
               <p>самые лучшие товары для собак</p>
             </div>
+            <Search search={search} setSearch={setSearch} />
           </div>
           <Link to={"userinfo"}>
             <div className="user__logo">
@@ -70,9 +77,15 @@ export default function Home() {
               <div className="content__items">
                 {isLoading
                   ? skeletons
-                  : items.products.map((obj) => {
-                      return <Product key={obj._id} {...obj} />;
-                    })}
+                  : items.products
+                      .filter((item) => {
+                        return item.name
+                          .toLowerCase()
+                          .includes(search.toLowerCase());
+                      })
+                      .map((obj) => {
+                        return <Product key={obj._id} {...obj} />;
+                      })}
               </div>
             </>
           )}

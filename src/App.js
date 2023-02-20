@@ -4,20 +4,17 @@ import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserInfo from "./pages/UserInfo";
+import { useSelector } from "react-redux";
 
 function App() {
-  // const { currentUser } = useContext(AuthContext);
+  const token = useSelector((state) => state.user.token);
 
   const ProtectedRoute = ({ children }) => {
-    if (localStorage.getItem("token")) {
+    if (token) {
       return children;
     } else {
       return <Navigate to={"/login"} />;
     }
-    // if (!currentUser) {
-    //   return <Navigate to={"/login"} />;
-    // }
-    // return children;
   };
 
   return (
