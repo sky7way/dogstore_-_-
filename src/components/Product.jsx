@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, selectCurrentItem } from "../Redux/Slices/cartReducer";
 
 export default function Product({
   _id,
@@ -7,7 +9,15 @@ export default function Product({
   name,
   available,
   discount,
+  stock,
 }) {
+  const dispatch = useDispatch();
+  const currentItem = useSelector(selectCurrentItem(_id));
+  function handleAddItem() {
+    dispatch(
+      addItem({ _id, price, pictures, name, available, discount, stock })
+    );
+  }
   return (
     <div className="product-block">
       <img className="product-block__image" src={pictures} alt="Pizza" />
@@ -22,7 +32,10 @@ export default function Product({
       </div>
       <div className="product-block__bottom">
         <div className="product-block__price">{price} ₽</div>
-        <div className="button button--outline button--add">
+        <div
+          className="button button--outline button--add"
+          onClick={handleAddItem}
+        >
           <svg
             width="12"
             height="12"
@@ -36,6 +49,7 @@ export default function Product({
             />
           </svg>
           <span>Добавить</span>
+          {currentItem && <i>{currentItem.count}</i>}
         </div>
       </div>
     </div>

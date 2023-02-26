@@ -1,3 +1,3 @@
 export default function getLSData() {
-    return localStorage.getItem("token");
-  }
+  return localStorage.getItem("token");
+}
