@@ -1,12 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { clearToken } from "../redux/slices/userReducer";
 export default function UserInfo() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { data: currentUser } = useQuery({
     queryKey: ["userInfo"],
     queryFn: async () => {
       const res = await fetch(
-        "https://api.react-learning.ru/v2/gr-9/users/me",
+        "https://api.react-learning.ru/v2/9-gr/users/me",
         {
           method: "GET",
           headers: {
@@ -21,6 +25,12 @@ export default function UserInfo() {
       return responce;
     },
   });
+
+  function leave() {
+    localStorage.removeItem("token");
+    dispatch(clearToken());
+    navigate("/login");
+  }
 
   return (
     <div className="info">
@@ -51,6 +61,9 @@ export default function UserInfo() {
             <img src={currentUser?.avatar} alt="" />
           </p>
         </div>
+        <span className="leave">
+          <div onClick={leave}>Выйти</div>
+        </span>
       </div>
     </div>
   );

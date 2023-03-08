@@ -1,23 +1,15 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserInfo from "./pages/UserInfo";
-import { useSelector } from "react-redux";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+
 import Cart from "./pages/Cart";
+import NotFound from "./pages/NotFound";
 
 function App() {
-  const token = useSelector((state) => state.user.token);
-
-  const ProtectedRoute = ({ children }) => {
-    if (token) {
-      return children;
-    } else {
-      return <Navigate to={"/login"} />;
-    }
-  };
-
   return (
     <div className="wrapper">
       <Routes>
@@ -34,7 +26,7 @@ function App() {
         <Route path="cart" element={<Cart />} />
         <Route path="login" element={<SignIn />} />
         <Route path="userinfo" element={<UserInfo />} />
-        <Route />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

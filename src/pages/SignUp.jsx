@@ -1,62 +1,125 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 
 export default function SignUp() {
-  const [body, setBody] = useState(undefined);
-
-  const { isLoading, isError } = useQuery({
-    queryKey: ["signUp"],
-    queryFn: async () => {
-      const res = await fetch("https://api.react-learning.ru/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      const responce = await res.json();
-
-      return responce;
-    },
-    enabled: body !== undefined,
-  });
-
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const name = e.target[0].value;
-    const email = e.target[1].value;
-    const group = e.target[2].value;
-    const password = e.target[3].value;
-    const obj = { name, email, group, password };
-    setBody(obj);
+  const initialValues = {
+    name: "",
+    email: "",
+    group: "",
+    password: "",
+  };
+  const useSignupMutation = () => {
+    return useMutation((formPayload) => {
+      return axios.post("https://api.react-learning.ru/signup", formPayload);
+    });
   };
 
-  if (!isLoading) {
-    navigate("/login");
-  }
+  const { mutate } = useSignupMutation();
+
+  const signUpSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Too Short!")
+      .max(20, "Too Long!")
+      .required("Необходимо указать имя"),
+
+    group: Yup.string()
+      .min(2, "Too Short!")
+      .max(5, "Too Long!")
+      .required("Необходимо указать группу"),
+
+    email: Yup.string().email().required("Необходимо указать Email"),
+
+    password: Yup.string()
+      .required("Необходимо указать пароль")
+      .min(6, "Пароль слишком короткий"),
+  });
 
   return (
-    <div className="formContainer">
-      <div className="formWrapper">
-        <span className="logo">DogStore</span>
-        <span className="title">Регистрация</span>
-        <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="Имя" />
-          <input type="email" placeholder="Email" />
-          <input type="text" placeholder="Группа" />
-          <input type="password" placeholder="Пароль" />
-          <button>Зарегистрироваться</button>
-          {isError && <span>Что-то пошло не так</span>}
-        </form>
-        <p>
-          Уже есть аккаунт? <Link to="/login">Войти</Link>
-        </p>
-      </div>
-    </div>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={signUpSchema}
+      onSubmit={(values) => {
+        mutate(values, {
+          onSuccess: (response) => {
+            navigate("/login");
+          },
+          onError: (response) => {
+            alert("Произошла ошибка");
+          },
+        });
+      }}
+    >
+      {(formik) => {
+        const { errors, touched, isValid, dirty } = formik;
+        return (
+          <div className="formContainer">
+            <div className="formWrapper">
+              <span className="logo">DogStore</span>
+              <span className="title">Регистрация</span>
+              <Form>
+                <Field
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Имя"
+                  className={errors.name && touched.name ? "input-error" : null}
+                />
+                <ErrorMessage name="name" component="span" className="error" />
+                <Field
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  className={
+                    errors.email && touched.email ? "input-error" : null
+                  }
+                />
+                <ErrorMessage name="email" component="span" className="error" />
+                <Field
+                  type="text"
+                  name="group"
+                  id="group"
+                  placeholder="Группа"
+                  className={
+                    errors.group && touched.group ? "input-error" : null
+                  }
+                />
+                <ErrorMessage name="name" component="span" className="error" />
+                <Field
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Пароль"
+                  className={
+                    errors.password && touched.password ? "input-error" : null
+                  }
+                />
+                <ErrorMessage
+                  name="password"
+                  component="span"
+                  className="error"
+                />
+                <button
+                  type="submit"
+                  className={!(dirty && isValid) ? "disabled-btn" : ""}
+                  disabled={!(dirty && isValid)}
+                >
+                  Зарегистрироваться
+                </button>
+              </Form>
+              <p>
+                Уже есть аккаунт? <Link to="/login">Войти</Link>
+              </p>
+            </div>
+          </div>
+        );
+      }}
+    </Formik>
   );
 }

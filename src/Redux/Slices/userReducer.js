@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getLSData from "../../Utils/getLSData";
+import getLSData from "../../utils/getLSData";
 
 const initialState = {
   token: getLSData() || "",
@@ -12,9 +12,12 @@ export const userSlice = createSlice({
     changeToken: (state, action) => {
       state.token = action.payload;
     },
+    clearToken: (state, action) => {
+      state.token = "";
+    },
   },
 });
 
-export const { changeToken } = userSlice.actions;
+export const { changeToken, clearToken } = userSlice.actions;
 
 export default userSlice.reducer;

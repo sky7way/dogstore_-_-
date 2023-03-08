@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Product from "../components/Product";
 import Skeleton from "../components/Skeleton";
-import logoSvg from "../img/v987-11a.jpg";
-import logo from "../img/icons8-user-100.png";
+import logoSvg from "../assets/img/v987-11a.jpg";
+import logo from "../assets/img/icons8-user-100.png";
 import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Search from "../components/Search";
@@ -12,7 +12,25 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const location = useLocation();
   const token = useSelector((state) => state.user.token);
-  const { totalPrice, totalCount } = useSelector((state) => state.cart);
+  const {
+    items: cards,
+    totalPrice,
+    totalCount,
+  } = useSelector((state) => state.cart);
+
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const cartJson = JSON.stringify(cards);
+      const priceJson = JSON.stringify(totalPrice);
+      const countJson = JSON.stringify(totalCount);
+      localStorage.setItem("cart", cartJson);
+      localStorage.setItem("price", priceJson);
+      localStorage.setItem("count", countJson);
+    }
+    isMounted.current = true;
+  }, [cards, totalPrice, totalCount]);
 
   const getProducts = async () => {
     const res = await fetch("https://api.react-learning.ru/products", {
@@ -37,9 +55,7 @@ export default function Home() {
   });
 
   const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
-  // .filter((item) => {
-  //   return item.title.toLowerCase().includes(search.toLowerCase());
-  // })
+
   return (
     <>
       <div className="header">
@@ -53,6 +69,8 @@ export default function Home() {
             {location.pathname !== "/cart" && (
               <Search search={search} setSearch={setSearch} />
             )}
+          </div>
+          <div className="cart__right">
             {location.pathname !== "/cart" && (
               <div className="header__cart">
                 <Link to="/cart" className="button button--cart">
@@ -91,12 +109,12 @@ export default function Home() {
                 </Link>
               </div>
             )}
+            <Link to={"userinfo"}>
+              <div className="user__logo">
+                <img src={logo} alt="" />
+              </div>
+            </Link>
           </div>
-          <Link to={"userinfo"}>
-            <div className="user__logo">
-              <img src={logo} alt="" />
-            </div>
-          </Link>
         </div>
       </div>
       <div className="container">
