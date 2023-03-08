@@ -15,6 +15,9 @@ export default function Product({
   const obj = { _id, price, pictures, name, available, discount, stock };
   const dispatch = useDispatch();
   const currentItem = useSelector(selectCurrentItem(_id));
+  // const lengthName = name => {
+  //  return name.length > 30 ? `${name.substring(0, 30)}...` : name;
+  // }
 
   function handleAddItem() {
     dispatch(addItem(obj));
@@ -22,7 +25,7 @@ export default function Product({
   return (
     <div className="product-block">
       <img className="product-block__image" src={pictures} alt="Pizza" />
-      <h4 className="product-block__title">{name}</h4>
+      <h4 className="product-block__title">{name.length > 19 ? `${name.substring(0, 18)}...` : name}</h4>
       <div className="product-block__selector">
         <ul>
           <li>{available ? "Есть в наличии" : "Товар закончился"}</li>
