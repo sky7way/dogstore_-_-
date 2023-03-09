@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import UserInfo from "./pages/UserInfo";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
+
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 

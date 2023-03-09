@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { clearToken } from "../redux/slices/userReducer";
+
 export default function UserInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
