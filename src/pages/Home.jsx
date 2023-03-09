@@ -18,6 +18,8 @@ export default function Home() {
     totalCount,
   } = useSelector((state) => state.cart);
 
+  const { items: likes } = useSelector((state) => state.like);
+
   const isMounted = useRef(false);
 
   useEffect(() => {
@@ -25,15 +27,20 @@ export default function Home() {
       const cartJson = JSON.stringify(cards);
       const priceJson = JSON.stringify(totalPrice);
       const countJson = JSON.stringify(totalCount);
+      const likesJson = JSON.stringify(likes);
+
+      localStorage.setItem("likes", likesJson);
       localStorage.setItem("cart", cartJson);
       localStorage.setItem("price", priceJson);
       localStorage.setItem("count", countJson);
     }
     isMounted.current = true;
-  }, [cards, totalPrice, totalCount]);
+  }, [cards, totalPrice, totalCount, likes]);
 
   const getProducts = async () => {
-    const res = await fetch("https://api.react-learning.ru/products", {
+    let url = `https://api.react-learning.ru/products/?query=${search}`;
+
+    const res = await fetch(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -50,7 +57,8 @@ export default function Home() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", { search }],
+
     queryFn: getProducts,
   });
 
@@ -132,19 +140,18 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <h2 className="content__title">Все товары ({items?.total})</h2>
+              <div className="flex">
+                <h2 className="content__title">Все товары ({items?.total})</h2>
+                <Link to={"/likes"}>
+                  <button>Избранное</button>
+                </Link>
+              </div>
               <div className="content__items">
                 {isLoading
                   ? skeletons
-                  : items.products
-                      .filter((item) => {
-                        return item.name
-                          .toLowerCase()
-                          .includes(search.toLowerCase());
-                      })
-                      .map((obj) => {
-                        return <Product key={obj._id} {...obj} />;
-                      })}
+                  : items?.products?.map((obj) => {
+                      return <Product key={obj._id} {...obj} />;
+                    })}
               </div>
             </>
           )}

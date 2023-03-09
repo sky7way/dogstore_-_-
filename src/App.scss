@@ -64,13 +64,21 @@ p {
 .container {
   width: 90%;
   margin: 0 auto;
+  padding-top: 150px;
+  // margin: 100px auto;
 }
 .header {
   border-bottom: 1px solid rgb(204, 183, 156);
   padding: 40px 0;
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  z-index: 1000;
 }
 .header {
   .container {
+    padding-top: 0px;
+    // margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -234,7 +242,7 @@ p {
   margin-bottom: 0;
 }
 .photo img {
-  width: 200px;
+  width: 300px;
 }
 .info {
   position: relative;
@@ -271,12 +279,12 @@ p {
   color: rgba(0, 0, 0, 0.26);
   font-size: 23px;
 }
-// .header__cart {
-//   // display: block;
-//   // position: relative;
-//   // left: 65%;
-//   // top: 16px;
-// }
+.header__cart {
+  // display: block;
+  // position: relative;
+  // left: 65%;
+  // top: 16px;
+}
 .button--cart {
   display: flex;
   align-items: center;
@@ -583,7 +591,7 @@ p {
   }
 }
 .container--cart {
-  margin-top: 10%;
+  // margin-top: 10%;
   .content__items {
     display: block;
   }
@@ -610,5 +618,99 @@ p {
   div {
     cursor: pointer;
     display: inline-block;
+  }
+}
+.full {
+  display: flex;
+  justify-content: center;
+  column-gap: 200px;
+  margin-top: 100px;
+  position: relative;
+}
+.full--left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h2 {
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+  img {
+    max-width: 300px;
+    margin-bottom: 30px;
+  }
+  div {
+    font-size: 25px;
+    font-weight: bold;
+  }
+  .full__btn {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    font-size: 18px;
+  }
+}
+.full--right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .btn {
+    cursor: pointer;
+    &-d {
+      i {
+        color: red;
+      }
+    }
+  }
+  .button--outline {
+    padding-top: 4px;
+  }
+
+  div {
+    font-size: 25px;
+    font-weight: bold;
+
+    li {
+      &:first-child {
+        margin-top: 20px;
+      }
+      font-size: 20px;
+      font-weight: normal;
+      list-style: circle;
+    }
+    margin-bottom: 20px;
+  }
+  .rating {
+    display: flex;
+    flex-wrap: nowrap;
+    div {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+.review {
+  display: flex;
+  padding: 15px;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border: 1px solid $orange;
+  &__top {
+    display: flex;
+    font-size: 20px;
+    column-gap: 20px;
+  }
+  &__author {
+    font-weight: bold;
+  }
+  &__rate {
+    font-weight: bold;
   }
 }
