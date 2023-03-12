@@ -16,7 +16,7 @@ export default function SignIn() {
 
     password: Yup.string()
       .required("Необходимо указать пароль")
-      .min(6, "пароль слишком короткий"),
+      .min(6, "Пароль слишком короткий"),
   });
 
   const initialValues = {
@@ -24,30 +24,30 @@ export default function SignIn() {
     password: "",
   };
 
-  const useSignupMutation = () => {
-    return useMutation((formPayload) => {
-      return axios.post("https://api.react-learning.ru/signin", formPayload);
+  const onSubmit = (values) => {
+    mutate(values, {
+      onSuccess: (response) => {
+        localStorage.setItem("token", response.data.token);
+        dispatch(changeToken(response.data.token));
+        navigate("/");
+      },
+      onError: (response) => {
+        alert("Произошла ошибка");
+      },
     });
   };
 
-  const { mutate } = useSignupMutation();
+  const { mutate } = useMutation({
+    mutationFn: (formPayload) => {
+    return axios.post("https://api.react-learning.ru/signin", formPayload);
+    }
+  });
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={signInSchema}
-      onSubmit={(values) => {
-        mutate(values, {
-          onSuccess: (response) => {
-            localStorage.setItem("token", response.data.token);
-            dispatch(changeToken(response.data.token));
-            navigate("/");
-          },
-          onError: (response) => {
-            alert("Произошла ошибка");
-          },
-        });
-      }}
+      onSubmit={onSubmit}
     >
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik;

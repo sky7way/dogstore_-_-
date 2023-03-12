@@ -14,28 +14,36 @@ export default function SignUp() {
     group: "",
     password: "",
   };
-  const useSignupMutation = () => {
-    return useMutation((formPayload) => {
-      return axios.post("https://api.react-learning.ru/signup", formPayload);
+
+
+  const { mutate } = useMutation({
+    mutationFn: (formPayload) => {
+    return axios.post("https://api.react-learning.ru/signup", formPayload);
+    }
+  });
+
+  const onSubmit = (values) => {
+    mutate(values, {
+      onSuccess: (response) => {
+        navigate("/login");
+      },
+      onError: (response) => {
+        alert("Произошла ошибка");
+      },
     });
   };
-
-  const { mutate } = useSignupMutation();
 
   const signUpSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, "Too Short!")
       .max(20, "Too Long!")
       .required("Необходимо указать имя"),
-
     group: Yup.string()
       .min(2, "Too Short!")
       .max(5, "Too Long!")
       .required("Необходимо указать группу"),
-
-    email: Yup.string().email().required("Необходимо указать Email"),
-
-    password: Yup.string()
+      email: Yup.string().email().required("Необходимо указать Email"),
+      password: Yup.string()
       .required("Необходимо указать пароль")
       .min(6, "Пароль слишком короткий"),
   });
@@ -44,16 +52,7 @@ export default function SignUp() {
     <Formik
       initialValues={initialValues}
       validationSchema={signUpSchema}
-      onSubmit={(values) => {
-        mutate(values, {
-          onSuccess: (response) => {
-            navigate("/login");
-          },
-          onError: (response) => {
-            alert("Произошла ошибка");
-          },
-        });
-      }}
+      onSubmit={onSubmit}
     >
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik;
