@@ -15,8 +15,7 @@ export default function SignUp() {
     password: "",
   };
 
-
-  const { mutate } = useMutation({
+ const { mutate } = useMutation({
     mutationFn: (formPayload) => {
     return axios.post("https://api.react-learning.ru/signup", formPayload);
     }
@@ -47,7 +46,7 @@ export default function SignUp() {
       .required("Необходимо указать пароль")
       .min(6, "Пароль слишком короткий"),
   });
-
+  
   return (
     <Formik
       initialValues={initialValues}

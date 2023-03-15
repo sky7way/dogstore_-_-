@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -22,31 +22,6 @@ export default function FullProduct() {
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
   const currentItem = useSelector(selectCurrentItem(id));
-
-  const {
-    items: cards,
-    totalPrice,
-    totalCount,
-  } = useSelector((state) => state.cart);
-
-  const { items: likes } = useSelector((state) => state.like);
-
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    if (isMounted.current) {
-      const cartJson = JSON.stringify(cards);
-      const priceJson = JSON.stringify(totalPrice);
-      const countJson = JSON.stringify(totalCount);
-      const likesJson = JSON.stringify(likes);
-
-      localStorage.setItem("likes", likesJson);
-      localStorage.setItem("cart", cartJson);
-      localStorage.setItem("price", priceJson);
-      localStorage.setItem("count", countJson);
-    }
-    isMounted.current = true;
-  }, [cards, totalPrice, totalCount, likes]);
 
   function handleAddItem() {
     dispatch(addItem(data));
@@ -76,7 +51,7 @@ export default function FullProduct() {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["product"],
+    queryKey: ["product", id],
     queryFn: getProduct,
   });
 
@@ -84,7 +59,7 @@ export default function FullProduct() {
     alert("Пицца не найдена");
     navigate("/");
   }
-  console.log(data);
+  
   return (
     <div className="container">
       <div className="full">
@@ -134,7 +109,7 @@ export default function FullProduct() {
         <h1>Отзывы: </h1>
         <div className="review__container">
           {data?.reviews.map((obj) => {
-            return <Review key={obj._id} {...obj} />;
+            return <Review key={obj._id} obj={obj} />;
           })}
         </div>
       </div>

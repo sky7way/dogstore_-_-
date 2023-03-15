@@ -1,20 +1,23 @@
 import React, { useRef, useState, useCallback } from "react";
 import debounce from "lodash.debounce";
+import { useDispatch } from "react-redux";
+import { clearSearch, setSearch } from "../redux/slices/searchReducer";
 
-export default function Search({ search, setSearch }) {
+export default function Search() {
   const [value, setValue] = useState("");
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
 
   const memoSearch = useCallback(
     debounce((value) => {
-      setSearch(value);
+      dispatch(setSearch(value));
     }, 500),
     []
   );
 
   const clear = () => {
     setValue("");
-    setSearch("");
+    dispatch(clearSearch());
     inputRef.current?.focus();
   };
 

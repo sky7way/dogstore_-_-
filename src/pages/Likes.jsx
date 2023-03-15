@@ -1,20 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Product from "../components/Product";
 
 export default function Likes() {
   const { items } = useSelector((state) => state.like);
-
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    if (isMounted.current) {
-      const cartJson = JSON.stringify(items);
-      localStorage.setItem("likes", cartJson);
-    }
-    isMounted.current = true;
-  }, [items]);
 
   if (items.length === 0) {
     return (
@@ -40,7 +30,7 @@ export default function Likes() {
       </div>
       <div className="content__items">
         {items.map((obj) => {
-          return <Product key={obj._id} {...obj} />;
+          return <Product key={obj._id} obj={obj} />;
         })}
       </div>
     </div>

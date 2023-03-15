@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import Product from "../components/Product";
 import Skeleton from "../components/Skeleton";
 import logoSvg from "../assets/img/v987-11a.jpg";
@@ -9,33 +9,10 @@ import Search from "../components/Search";
 import { useSelector } from "react-redux";
 
 export default function Home() {
-  const [search, setSearch] = useState("");
+  const search = useSelector((state) => state.search.search);
   const location = useLocation();
   const token = useSelector((state) => state.user.token);
-  const {
-    items: cards,
-    totalPrice,
-    totalCount,
-  } = useSelector((state) => state.cart);
-
-  const { items: likes } = useSelector((state) => state.like);
-
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    if (isMounted.current) {
-      const cartJson = JSON.stringify(cards);
-      const priceJson = JSON.stringify(totalPrice);
-      const countJson = JSON.stringify(totalCount);
-      const likesJson = JSON.stringify(likes);
-
-      localStorage.setItem("likes", likesJson);
-      localStorage.setItem("cart", cartJson);
-      localStorage.setItem("price", priceJson);
-      localStorage.setItem("count", countJson);
-    }
-    isMounted.current = true;
-  }, [cards, totalPrice, totalCount, likes]);
+  const { totalPrice, totalCount } = useSelector((state) => state.cart);
 
   const getProducts = async () => {
     let url = `https://api.react-learning.ru/products/?query=${search}`;
@@ -57,8 +34,7 @@ export default function Home() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["products", { search }],
-
+    queryKey: ["products", search],
     queryFn: getProducts,
   });
 
@@ -74,9 +50,7 @@ export default function Home() {
               <h1>Dog Store</h1>
               <p>самые лучшие товары для собак</p>
             </div>
-            {location.pathname !== "/cart" && (
-              <Search search={search} setSearch={setSearch} />
-            )}
+            {location.pathname !== "/cart" && <Search />}
           </div>
           <div className="cart__right">
             {location.pathname !== "/cart" && (
@@ -130,7 +104,7 @@ export default function Home() {
           {isError ? (
             <div className="content__error">
               <h2>
-                Ничего не найден<span>😕</span>
+                Ничего не найдено<span>😕</span>
               </h2>
               <p>
                 Вероятней всего, произошла ошибка.
@@ -150,7 +124,7 @@ export default function Home() {
                 {isLoading
                   ? skeletons
                   : items?.products?.map((obj) => {
-                      return <Product key={obj._id} {...obj} />;
+                      return <Product key={obj._id} obj={obj} />;
                     })}
               </div>
             </>

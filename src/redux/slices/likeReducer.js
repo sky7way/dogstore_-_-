@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getLSLikeData from "../../utils/getLSLikesData";
 
+const saveLs = (state) => {
+  localStorage.setItem("likes", JSON.stringify(state.items));
+};
+
 const initialState = {
   items: getLSLikeData() || [],
 };
@@ -18,10 +22,12 @@ export const likeSlice = createSlice({
       } else {
         state.items.push(action.payload);
       }
+      saveLs(state);
     },
 
     dislikeItem: (state, action) => {
       state.items = state.items.filter((obj) => obj._id !== action.payload._id);
+      saveLs(state);
     },
   },
 });

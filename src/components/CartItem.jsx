@@ -20,10 +20,6 @@ export default function CartItem({
 }) {
   const currentItem = useSelector(selectCurrentItem(_id));
   const dispatch = useDispatch();
-  
-  function decrementItem(_id) {
-    dispatch(decrement({ _id }));
-  }
 
   function tryDelete(_id) {
     if (
@@ -47,7 +43,7 @@ export default function CartItem({
       <div className="cart__item-count">
         <button
           disabled={count === 1}
-          onClick={() => decrementItem(_id)}
+          onClick={() => dispatch(decrement({ _id }))}
           className="button button--outline button--circle cart__item-count-minus"
         >
           <Interaction />

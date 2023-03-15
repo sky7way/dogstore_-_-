@@ -12,7 +12,7 @@ export const userSlice = createSlice({
     changeToken: (state, action) => {
       state.token = action.payload;
     },
-    clearToken: (state, action) => {
+    clearToken: (state) => {
       state.token = "";
     },
   },

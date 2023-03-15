@@ -279,12 +279,12 @@ p {
   color: rgba(0, 0, 0, 0.26);
   font-size: 23px;
 }
-.header__cart {
-  // display: block;
-  // position: relative;
-  // left: 65%;
-  // top: 16px;
-}
+// .header__cart {
+//   // display: block;
+//   // position: relative;
+//   // left: 65%;
+//   // top: 16px;
+// }
 .button--cart {
   display: flex;
   align-items: center;
@@ -712,5 +712,21 @@ p {
   }
   &__rate {
     font-weight: bold;
+  }
+}
+
+.product-block {
+  position: relative;
+  .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 25px;
+    cursor: pointer;
+  }
+  .btn-d {
+    i {
+      color: red;
+    }
   }
 }

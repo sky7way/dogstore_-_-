@@ -1,49 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, selectCurrentItem } from "../redux/slices/cartReducer";
 import Add from "./svg/Add";
 import { Link } from "react-router-dom";
+import {
+  dislikeItem,
+  likeItem,
+  selectCurrentLikeItem,
+} from "../redux/slices/likeReducer";
 
-export default function Product({
-  _id,
-  price,
-  pictures,
-  name,
-  available,
-  discount,
-  stock,
-}) {
-  const obj = { _id, price, pictures, name, available, discount, stock };
+export default function Product({obj}) {
   const dispatch = useDispatch();
-  const currentItem = useSelector(selectCurrentItem(_id));
+  const currentItem = useSelector(selectCurrentItem(obj._id));
+  const currentLike = useSelector(selectCurrentLikeItem(obj._id));
+  const [like, setLike] = useState(currentLike ? true : false);
 
-  function handleAddItem() {
-    dispatch(addItem(obj));
+  function handleLike() {
+    dispatch(likeItem(obj));
+    setLike(true);
   }
+
+  function handleDislike() {
+    dispatch(dislikeItem(obj));
+    setLike(false);
+  }
+
   return (
     <div className="product-block">
-      <Link to={`/product/${_id}`}>
-        <img className="product-block__image" src={pictures} alt="Pizza" />
+      {like ? (
+        <div className="btn btn-d" onClick={handleDislike}>
+          <i className="uil uil-heart"></i>
+        </div>
+      ) : (
+        <div className="btn" onClick={handleLike}>
+          <i className="uil uil-heart"></i>
+        </div>
+      )}
+      <Link to={`/product/${obj._id}`}>
+        <img className="product-block__image" src={obj.pictures} alt="Pizza" />
       </Link>
-      <h4 className="product-block__title">{ name.length > 19 ? `${name.substring(0, 18)}...` : name}</h4>
+      <h5 className="product-block__title">{ obj.name.length > 19 ? `${obj.name.substring(0, 18)}...` : obj.name}</h5>
       <div className="product-block__selector">
         <ul>
-          <li>{available ? "Есть в наличии" : "Товар закончился"}</li>
+          <li>{obj.available ? "Есть в наличии" : "Товар закончился"}</li>
         </ul>
         <ul>
-          <li>{discount !== 0 ? `Скидка : ${discount} %` : "Конечная цена"}</li>
+          <li>{obj.discount !== 0 ? `Скидка : ${obj.discount} %` : "Конечная цена"}</li>
         </ul>
       </div>
       <div className="product-block__bottom">
-        <div className="product-block__price">{price} ₽</div>
-        <div
+        <div className="product-block__price">{obj.price} ₽</div>
+        <button
           className="button button--outline button--add"
-          onClick={handleAddItem}
+          onClick={() => dispatch(addItem(obj))}
         >
           <Add />
           <span>Добавить</span>
           {currentItem && <i>{currentItem.count}</i>}
-        </div>
+        </button>
       </div>
     </div>
   );

@@ -39,8 +39,8 @@ export default function SignIn() {
 
   const { mutate } = useMutation({
     mutationFn: (formPayload) => {
-    return axios.post("https://api.react-learning.ru/signin", formPayload);
-    }
+      return axios.post("https://api.react-learning.ru/signin", formPayload);
+    },
   });
 
   return (
