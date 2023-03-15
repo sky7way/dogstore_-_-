@@ -15,6 +15,10 @@ export default function Product({obj}) {
   const currentLike = useSelector(selectCurrentLikeItem(obj._id));
   const [like, setLike] = useState(currentLike ? true : false);
 
+  function handleAddItem() {
+    dispatch(addItem(obj));
+  }
+
   function handleLike() {
     dispatch(likeItem(obj));
     setLike(true);
@@ -39,7 +43,7 @@ export default function Product({obj}) {
       <Link to={`/product/${obj._id}`}>
         <img className="product-block__image" src={obj.pictures} alt="Pizza" />
       </Link>
-      <h5 className="product-block__title">{ obj.name.length > 19 ? `${obj.name.substring(0, 18)}...` : obj.name}</h5>
+      <h4 className="product-block__title">{obj.name.length > 19 ? `${obj.name.substring(0, 18)}...` : obj.name}</h4>
       <div className="product-block__selector">
         <ul>
           <li>{obj.available ? "Есть в наличии" : "Товар закончился"}</li>
@@ -52,7 +56,8 @@ export default function Product({obj}) {
         <div className="product-block__price">{obj.price} ₽</div>
         <button
           className="button button--outline button--add"
-          onClick={() => dispatch(addItem(obj))}
+          onClick={handleAddItem}
+          disabled={currentItem?.count === obj.stock}
         >
           <Add />
           <span>Добавить</span>
