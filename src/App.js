@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserInfo from "./pages/UserInfo";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import FullProduct from "./components/FullProduct";
@@ -24,7 +25,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="register" element={<SignUp />} /><Route
+        <Route path="register" element={<SignUp />} />
+        <Route
           path="cart"
           element={
             <ProtectedRoute>

@@ -51,14 +51,14 @@ export default function Cart() {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["cartproducts", ids],
+    queryKey: ["cartproducts"],
     queryFn: getAllCartProducts,
   });
 
   if (isError) {
     errorAlert("Продукт не найден");
   }
-  
+
   if (items.length === 0) {
     return <CartEmpty />;
   }
@@ -77,7 +77,7 @@ export default function Cart() {
           </div>
         </div>
         <div className="content__items">
-        {data?.map((item) => {
+          {data?.map((item) => {
             return <CartItem key={item.value._id} {...item.value} />;
           })}
         </div>
@@ -96,7 +96,8 @@ export default function Cart() {
               className="button button--outline button--add go-back-btn"
             >
               <Back />
-          <span>Вернуться назад</span>
+
+              <span>Вернуться назад</span>
             </Link>
             <div className="button pay-btn">
               <span>Оплатить сейчас</span>

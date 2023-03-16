@@ -100,7 +100,7 @@ export default function Home() {
                 {isLoading
                   ? skeletons
                   : items?.products?.map((obj) => {
-                      return <Product key={obj._id} obj={obj} />;
+                      return <Product key={obj._id} {...obj} />;
                     })}
               </div>
             </>

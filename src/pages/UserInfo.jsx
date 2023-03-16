@@ -1,9 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { clearToken } from "../redux/slices/userReducer";
 import { useDispatch, useSelector } from "react-redux";
-
+import { clearToken } from "../redux/slices/userReducer";
 export default function UserInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,7 +31,7 @@ export default function UserInfo() {
   function leave() {
     localStorage.removeItem("token");
     dispatch(clearToken());
-    navigate("/login");
+    navigate("/register");
   }
 
   return (

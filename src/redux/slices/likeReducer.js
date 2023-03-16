@@ -22,6 +22,7 @@ export const likeSlice = createSlice({
       } else {
         state.items.push({ _id: action.payload._id });
       }
+
       saveLs(state);
     },
 

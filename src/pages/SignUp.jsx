@@ -16,10 +16,28 @@ export default function SignUp() {
     password: "",
   };
 
- const { mutate } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (formPayload) => {
-    return axios.post("https://api.react-learning.ru/signup", formPayload);
-    }
+      return axios.post("https://api.react-learning.ru/signup", formPayload);
+    },
+  });
+
+  const signUpSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "Too Short!")
+      .max(20, "Too Long!")
+      .required("Необходимо указать имя"),
+
+    group: Yup.string()
+      .min(2, "Too Short!")
+      .max(5, "Too Long!")
+      .required("Необходимо указать группу"),
+
+    email: Yup.string().email().required("Необходимо указать Email"),
+
+    password: Yup.string()
+      .required("Необходимо указать пароль")
+      .min(6, "Пароль слишком короткий"),
   });
 
   const onSubmit = (values) => {
@@ -28,26 +46,11 @@ export default function SignUp() {
         navigate("/login");
       },
       onError: (response) => {
-        errorAlert("Пользователь с данным e-mail уже зарегистрирован");
+        errorAlert("Произошла ошибка");
       },
     });
   };
 
-  const signUpSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, "Too Short!")
-      .max(20, "Too Long!")
-      .required("Необходимо указать имя"),
-    group: Yup.string()
-      .min(2, "Too Short!")
-      .max(5, "Too Long!")
-      .required("Необходимо указать группу"),
-      email: Yup.string().email().required("Необходимо указать Email"),
-      password: Yup.string()
-      .required("Необходимо указать пароль")
-      .min(6, "Пароль слишком короткий"),
-  });
-  
   return (
     <Formik
       initialValues={initialValues}

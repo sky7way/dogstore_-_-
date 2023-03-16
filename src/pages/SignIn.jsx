@@ -17,7 +17,7 @@ export default function SignIn() {
 
     password: Yup.string()
       .required("Необходимо указать пароль")
-      .min(6, "Пароль слишком короткий"),
+      .min(6, "пароль слишком короткий"),
   });
 
   const initialValues = {
@@ -33,7 +33,7 @@ export default function SignIn() {
         navigate("/");
       },
       onError: (response) => {
-        errorAlert("Неверный логин или пароль");
+        errorAlert("Произошла ошибка");
       },
     });
   };

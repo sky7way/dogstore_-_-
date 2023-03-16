@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, selectCurrentItem } from "../redux/slices/cartReducer";
 import Add from "./svg/Add";
@@ -9,15 +9,23 @@ import {
   selectCurrentLikeItem,
 } from "../redux/slices/likeReducer";
 
-export default function Product({obj}) {
+export default function Product({
+  _id,
+  price,
+  pictures,
+  name,
+  available,
+  discount,
+  stock,
+}) {
+  const obj = { _id, price, pictures, name, available, discount, stock };
   const dispatch = useDispatch();
-  const currentItem = useSelector(selectCurrentItem(obj._id));
-  const currentLike = useSelector(selectCurrentLikeItem(obj._id));
- 
+  const currentItem = useSelector(selectCurrentItem(_id));
+  const currentLike = useSelector(selectCurrentLikeItem(_id));
 
   return (
     <div className="product-block">
-     {currentLike ? (
+      {currentLike ? (
         <div className="btn btn-d" onClick={() => dispatch(dislikeItem(obj))}>
           <i className="uil uil-heart"></i>
         </div>
@@ -26,24 +34,24 @@ export default function Product({obj}) {
           <i className="uil uil-heart"></i>
         </div>
       )}
-      <Link to={`/product/${obj._id}`}>
-        <img className="product-block__image" src={obj.pictures} alt="Pizza" />
+      <Link to={`/product/${_id}`}>
+        <img className="product-block__image" src={pictures} alt="Pizza" />
       </Link>
-      <h4 className="product-block__title">{obj.name.length > 19 ? `${obj.name.substring(0, 18)}...` : obj.name}</h4>
+      <h4 className="product-block__title">{name.length > 19 ? `${name.substring(0, 18)}...` : name}</h4>
       <div className="product-block__selector">
         <ul>
-          <li>{obj.available ? "Есть в наличии" : "Товар закончился"}</li>
+          <li>{available ? "Есть в наличии" : "Товар закончился"}</li>
         </ul>
         <ul>
-          <li>{obj.discount !== 0 ? `Скидка : ${obj.discount} %` : "Конечная цена"}</li>
+          <li>{discount !== 0 ? `Скидка : ${discount} %` : "Конечная цена"}</li>
         </ul>
       </div>
       <div className="product-block__bottom">
-        <div className="product-block__price">{obj.price} ₽</div>
+        <div className="product-block__price">{price} ₽</div>
         <button
           className="button button--outline button--add"
           onClick={() => dispatch(addItem(obj))}
-          disabled={currentItem?.count === obj.stock}
+          disabled={currentItem?.count === stock}
         >
           <Add />
           <span>Добавить</span>

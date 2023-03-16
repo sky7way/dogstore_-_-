@@ -1,3 +1,4 @@
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -6,18 +7,19 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addItem, selectCurrentItem } from "../redux/slices/cartReducer";
 import Add from "./svg/Add";
-import { errorAlert } from "../utils/errorAlert";
 import {
   dislikeItem,
   likeItem,
   selectCurrentLikeItem,
 } from "../redux/slices/likeReducer";
 import Review from "./Review";
+import { errorAlert } from "../utils/errorAlert";
 
 export default function FullProduct() {
   const navigate = useNavigate();
   const { id } = useParams();
   const currentLike = useSelector(selectCurrentLikeItem(id));
+
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
   const currentItem = useSelector(selectCurrentItem(id));
@@ -36,7 +38,7 @@ export default function FullProduct() {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["product", id],
+    queryKey: ["product"],
     queryFn: getProduct,
   });
 
@@ -44,7 +46,7 @@ export default function FullProduct() {
     errorAlert("Продукт не найден");
     navigate("/");
   }
-  
+
   return (
     <div className="container">
       <div className="full">
@@ -97,7 +99,7 @@ export default function FullProduct() {
         <h1>Отзывы: </h1>
         <div className="review__container">
           {data?.reviews.map((obj) => {
-            return <Review key={obj._id} obj={obj} />;
+            return <Review key={obj._id} {...obj} />;
           })}
         </div>
       </div>
