@@ -6,6 +6,7 @@ import { changeToken } from "../redux/slices/userReducer";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { errorAlert } from "../utils/errorAlert";
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export default function SignIn() {
         navigate("/");
       },
       onError: (response) => {
-        alert("Произошла ошибка");
+        errorAlert("Неверный логин или пароль");
       },
     });
   };

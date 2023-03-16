@@ -5,11 +5,11 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserInfo from "./pages/UserInfo";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import FullProduct from "./components/FullProduct";
-import Likes from "./pages/Likes";
+import Favorites from "./pages/Favorites";
+import AddProduct from "./pages/AddProduct";
 
 function App() {
   return (
@@ -24,13 +24,48 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="register" element={<SignUp />} />
-        <Route path="cart" element={<Cart />} />
+        <Route path="register" element={<SignUp />} /><Route
+          path="cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
         <Route path="login" element={<SignIn />} />
-        <Route path="userinfo" element={<UserInfo />} />
-        <Route path="likes" element={<Likes />} />
+        <Route
+          path="userinfo"
+          element={
+            <ProtectedRoute>
+              <UserInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="likes"
+          element={
+            <ProtectedRoute>
+              <Favorites />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="newproduct"
+          element={
+            <ProtectedRoute>
+              <AddProduct />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
-        <Route path="/product/:id" element={<FullProduct />} />
+        <Route
+          path="/product/:id"
+          element={
+            <ProtectedRoute>
+              <FullProduct />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

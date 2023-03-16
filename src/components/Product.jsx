@@ -13,30 +13,16 @@ export default function Product({obj}) {
   const dispatch = useDispatch();
   const currentItem = useSelector(selectCurrentItem(obj._id));
   const currentLike = useSelector(selectCurrentLikeItem(obj._id));
-  const [like, setLike] = useState(currentLike ? true : false);
-
-  function handleAddItem() {
-    dispatch(addItem(obj));
-  }
-
-  function handleLike() {
-    dispatch(likeItem(obj));
-    setLike(true);
-  }
-
-  function handleDislike() {
-    dispatch(dislikeItem(obj));
-    setLike(false);
-  }
+ 
 
   return (
     <div className="product-block">
-      {like ? (
-        <div className="btn btn-d" onClick={handleDislike}>
+     {currentLike ? (
+        <div className="btn btn-d" onClick={() => dispatch(dislikeItem(obj))}>
           <i className="uil uil-heart"></i>
         </div>
       ) : (
-        <div className="btn" onClick={handleLike}>
+        <div className="btn" onClick={() => dispatch(likeItem(obj))}>
           <i className="uil uil-heart"></i>
         </div>
       )}
@@ -56,7 +42,7 @@ export default function Product({obj}) {
         <div className="product-block__price">{obj.price} ₽</div>
         <button
           className="button button--outline button--add"
-          onClick={handleAddItem}
+          onClick={() => dispatch(addItem(obj))}
           disabled={currentItem?.count === obj.stock}
         >
           <Add />

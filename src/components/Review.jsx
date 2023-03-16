@@ -21,20 +21,28 @@ export default function Review({ author, rating, text }) {
     return responce;
   };
 
-  const { data } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["author"],
     queryFn: getAuthor,
   });
 
   return (
     <div className="review">
-      <div className="review__top">
-        <div className="review__author">Автор: {data?.name}</div>
-        <div className="review__rate">Оценка: {rating}</div>
-      </div>
-      <div className="review__bottom">
-        <div className="review__text">{text}</div>
-      </div>
+      {isError ? (
+        <div className="review__top">
+          <div className="review__author">Автор не найден</div>
+        </div>
+      ) : (
+        <>
+          <div className="review__top">
+            <div className="review__author">Автор: {data?.name}</div>
+            <div className="review__rate">Оценка: {rating}</div>
+          </div>
+          <div className="review__bottom">
+            <div className="review__text">{text}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

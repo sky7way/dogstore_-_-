@@ -20,7 +20,7 @@ export const likeSlice = createSlice({
       if (currentItem) {
         return;
       } else {
-        state.items.push(action.payload);
+        state.items.push({ _id: action.payload._id });
       }
       saveLs(state);
     },
@@ -34,6 +34,8 @@ export const likeSlice = createSlice({
 
 export const selectCurrentLikeItem = (id) => (state) =>
   state.like.items.find((obj) => obj._id === id);
+
+export const selectAllIds = (state) => state.like.items.map((item) => item._id);
 
 export const { likeItem, dislikeItem } = likeSlice.actions;
 
