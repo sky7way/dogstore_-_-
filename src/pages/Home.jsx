@@ -87,20 +87,30 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <div className="flex">
-                <h2 className="content__title">Все товары ({items?.total})</h2>
-                <Link to={"/likes"}>
-                  <button>Избранное</button>
-                </Link>
-                <Link to={"/newproduct"}>
-                  <button className="bg">Добавить продукт</button>
-                </Link>
+              <div className="sides">
+                <div className="flex">
+                  <h2 className="content__title">
+                    Все товары ({items?.total})
+                  </h2>
+                  <Link to={"/likes"}>
+                    <button>Избранное</button>
+                  </Link>
+                  <Link to={"/newproduct"}>
+                    <button className="bg">Добавить продукт</button>
+                  </Link>
+                </div>
+                <div>
+                  <Link to={"/myproducts"}>
+                    <button>Мои продукты</button>
+                  </Link>
+                </div>
               </div>
+
               <div className="content__items">
                 {isLoading
                   ? skeletons
                   : items?.products?.map((obj) => {
-                      return <Product key={obj._id} {...obj} />;
+                      return <Product key={obj._id} obj={obj} />;
                     })}
               </div>
             </>

@@ -4,7 +4,7 @@ import emptyImg from "../assets/img/empty-cart.png";
 
 export default function CartEmpty() {
   return (
-    <div className="container container--cart">
+    <div className="container ">
       <div className="cart cart--empty">
         <h2>
           Корзина пустая <span>😕</span>

@@ -45,7 +45,6 @@ export default function CartItem({
         </div>
         <div className="cart__item-info">
           <h3>{name}</h3>
-          {discount ? <p>Скидка: {discount} % </p> : ""}
         </div>
         <div className="cart__item-count">
           <button
@@ -65,7 +64,18 @@ export default function CartItem({
           </button>
         </div>
         <div className="cart__item-price">
-          <b>{price} ₽</b>
+          {discount ? (
+            <p className="discount">
+              <span className="last__price">{price}</span> ₽
+              <span className="new__price">
+                {" "}
+                {price - (price / 100) * discount}
+              </span>{" "}
+              ₽
+            </p>
+          ) : (
+            <b>{price} ₽</b>
+          )}
         </div>
         <div onClick={tryDelete} className="cart__item-remove">
           <div className="button button--outline button--circle">

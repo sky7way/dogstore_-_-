@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Product from "../components/Product";
-import FavoritesEmpty from "../components/FavoritesEmpty";
+import CategoryEmpty from "../components/ProdcutsEmpty";
 import { selectAllIds } from "../redux/slices/likeReducer";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert } from "../utils/errorAlert";
@@ -29,7 +29,7 @@ export default function Favorites() {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["cartproducts"],
+    queryKey: ["favoriteproducts"],
     queryFn: getAllFavoriteProducts,
   });
 
@@ -38,20 +38,20 @@ export default function Favorites() {
   }
 
   if (items.length === 0) {
-    return <FavoritesEmpty />;
+    return <CategoryEmpty />;
   }
 
   return (
-    <div className="container">
+    <div className="container container--my">
       <div className="flex">
         <Link to={"/"}>
           <button>Назад</button>
         </Link>
         <h2 className="content__title">Избранные товары ({items.length})</h2>
       </div>
-      <div className="content__items">
+      <div className="content__items content__items--my">
         {data?.map((obj) => {
-          return <Product key={obj.value._id} {...obj.value} />;
+          return <Product key={obj.value._id} obj={obj.value} />;
         })}
       </div>
     </div>

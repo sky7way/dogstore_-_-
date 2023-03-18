@@ -48,12 +48,12 @@ export default function FullProduct() {
   }
 
   return (
-    <div className="container">
+    <div className="container container--full">
       <div className="full">
         <div className="full--left">
           <h2>{data?.name}</h2>
           <img src={data?.pictures} alt="pizza" />
-          <div>от {data?.price} ₽</div>
+          <div>{data?.price} ₽</div>
           <div className="full__btn">
             <Link to="/" className="button button--black">
               <span>Назад</span>
@@ -65,7 +65,7 @@ export default function FullProduct() {
             Информация:
             <ul>
               <li>{data?.available ? "В наличии" : "Нет в наличии"}</li>
-              <li>{data?.description}</li>
+              <li dangerouslySetInnerHTML={{ __html: data?.description }}></li>
               <li>Кол-во на складе: {data?.stock}</li>
               <li>Вес: {data?.wight}</li>
               {data?.discount !== 0 ? <li>Скидка: {data?.discount}%</li> : ""}

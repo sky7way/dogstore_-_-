@@ -11,6 +11,8 @@ import NotFound from "./pages/NotFound";
 import FullProduct from "./components/FullProduct";
 import Favorites from "./pages/Favorites";
 import AddProduct from "./pages/AddProduct";
+import MyProducts from "./pages/MyProducts";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   return (
@@ -56,6 +58,22 @@ function App() {
           element={
             <ProtectedRoute>
               <AddProduct />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="myproducts"
+          element={
+            <ProtectedRoute>
+              <MyProducts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="editproduct"
+          element={
+            <ProtectedRoute>
+              <EditProduct />
             </ProtectedRoute>
           }
         />

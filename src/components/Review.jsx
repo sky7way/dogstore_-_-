@@ -22,7 +22,7 @@ export default function Review({ author, rating, text }) {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["author"],
+    queryKey: ["author", author],
     queryFn: getAuthor,
   });
 

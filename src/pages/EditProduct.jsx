@@ -6,31 +6,36 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { errorAlert } from "../utils/errorAlert";
-import { addProduct } from "../redux/slices/userReducer";
+import { editProduct } from "../redux/slices/userReducer";
 
-export default function AddProduct() {
+export default function EditProduct() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
+  const currentProd = useSelector((state) => state.user.editedProduct);
   const dispatch = useDispatch();
 
   const initialValues = {
-    name: "",
-    stock: "",
-    price: "",
-    discount: "",
-    description: "",
-    pictures: "",
+    name: currentProd.name || "",
+    stock: currentProd.stock || "",
+    price: currentProd.price || "",
+    discount: currentProd.discount || "",
+    description: currentProd.description || "",
+    pictures: currentProd.pictures || "",
   };
 
   const { mutate } = useMutation({
     mutationFn: (formPayload) => {
-      return axios.post("https://api.react-learning.ru/products", formPayload, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      return axios.patch(
+        `https://api.react-learning.ru/products/${currentProd._id}`,
+        formPayload,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
     },
   });
 
@@ -69,12 +74,12 @@ export default function AddProduct() {
 
   const onSubmit = (values) => {
     mutate(values, {
-      onSuccess: (response) => {
-        dispatch(addProduct(response.data));
+      onSuccess: (responce) => {
+        dispatch(editProduct(responce.data));
         navigate("/myproducts");
       },
       onError: () => {
-        errorAlert("Произошла ошибка при добавлении продукта");
+        errorAlert("Произошла ошибка при редактировании продукта");
       },
     });
   };
@@ -91,7 +96,7 @@ export default function AddProduct() {
           <div className="formContainer">
             <div className="formWrapper formWrapper--product">
               <span className="logo">DogStore</span>
-              <span className="title">Добавление продукта</span>
+              <span className="title">Редактирование продукта</span>
               <Form>
                 <Field
                   type="text"
@@ -176,11 +181,11 @@ export default function AddProduct() {
                   className={!(dirty && isValid) ? "disabled-btn" : ""}
                   disabled={!(dirty && isValid)}
                 >
-                  Добавить
+                  Применить изменения
                 </button>
               </Form>
               <p>
-                <Link to="/">
+                <Link to="/myproducts">
                   <button className="bg">Назад</button>
                 </Link>
               </p>

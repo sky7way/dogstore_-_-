@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { changeToken } from "../redux/slices/userReducer";
+import { setToken, setUserId } from "../redux/slices/userReducer";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -28,8 +28,8 @@ export default function SignIn() {
   const onSubmit = (values) => {
     mutate(values, {
       onSuccess: (response) => {
-        localStorage.setItem("token", response.data.token);
-        dispatch(changeToken(response.data.token));
+        dispatch(setUserId(response.data.data._id));
+        dispatch(setToken(response.data.token));
         navigate("/");
       },
       onError: (response) => {
