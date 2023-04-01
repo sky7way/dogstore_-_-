@@ -179,7 +179,6 @@ export default function EditProduct() {
                 <button
                   type="submit"
                   className={!(dirty && isValid) ? "disabled-btn" : ""}
-                  disabled={!(dirty && isValid)}
                 >
                   Применить изменения
                 </button>

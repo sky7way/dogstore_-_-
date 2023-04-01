@@ -110,7 +110,6 @@ export default function SignUp() {
                 <button
                   type="submit"
                   className={!(dirty && isValid) ? "disabled-btn" : ""}
-                  disabled={!(dirty && isValid)}
                 >
                   Зарегистрироваться
                 </button>

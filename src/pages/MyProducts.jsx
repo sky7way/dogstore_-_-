@@ -34,12 +34,26 @@ export default function MyProducts() {
 
   useEffect(() => {
     if (!isLoading) {
-      setMyProd([
-        ...new Set([
-          ...products,
-          ...data.products.filter((prod) => prod.author._id === userId),
-        ]),
-      ]);
+      const filterProd = data.products.filter(
+        (prod) => prod.author._id === userId
+      );
+      const allProd = [...filterProd, ...products];
+
+      setMyProd(
+        allProd.reduce(
+          (acc, pr) => {
+            if (acc.map[pr._id]) return acc;
+
+            acc.map[pr._id] = true;
+            acc.products.push(pr);
+            return acc;
+          },
+          {
+            map: {},
+            products: [],
+          }
+        ).products
+      );
     }
   }, [data, userId, isLoading, products]);
 

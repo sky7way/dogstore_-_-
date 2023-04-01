@@ -39,6 +39,7 @@ export default function Product({ obj }) {
                 Authorization: "Bearer " + token,
               },
             });
+            navigate("/");
           },
         },
         {

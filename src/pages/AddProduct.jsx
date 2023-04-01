@@ -174,7 +174,6 @@ export default function AddProduct() {
                 <button
                   type="submit"
                   className={!(dirty && isValid) ? "disabled-btn" : ""}
-                  disabled={!(dirty && isValid)}
                 >
                   Добавить
                 </button>

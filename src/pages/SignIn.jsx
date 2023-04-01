@@ -85,7 +85,6 @@ export default function SignIn() {
                 <button
                   type="submit"
                   className={!(dirty && isValid) ? "disabled-btn" : ""}
-                  disabled={!(dirty && isValid)}
                 >
                   Войти
                 </button>
