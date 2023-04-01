@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getLSData from "../../utils/getLSData";
 
 const initialState = {
   userId: "",
