@@ -8,12 +8,20 @@ export default function Search() {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 
+  // const memoSearch = useCallback(
+  //   debounce((value) => {
+  //     dispatch(setSearch(value));
+  //   }, 500),
+  //   []
+  // );
+
   const memoSearch = useMemo(
-     () => debounce(value => {
-      dispatch(setSearch(value));
-    }, 500),
-    [dispatch]
-  );
+    () => debounce(value => {
+     dispatch(setSearch(value));
+   }, 500),
+   [dispatch]
+ );
+
 
   const clear = () => {
     setValue("");

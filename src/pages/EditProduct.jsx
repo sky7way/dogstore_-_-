@@ -64,7 +64,7 @@ export default function EditProduct() {
 
     description: Yup.string()
       .min(2, "Слишком короткое!")
-      .max(150, "Слишком длинное!")
+      .max(350, "Слишком длинное!")
       .required("Необходимо указать описание товара"),
 
     pictures: Yup.string()

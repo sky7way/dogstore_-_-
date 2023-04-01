@@ -8,7 +8,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
-import FullProduct from "./components/FullProduct";
+import Product from "./components/Product";
 import Favorites from "./pages/Favorites";
 import AddProduct from "./pages/AddProduct";
 import MyProducts from "./pages/MyProducts";
@@ -82,7 +82,7 @@ function App() {
           path="/product/:id"
           element={
             <ProtectedRoute>
-              <FullProduct />
+              <Product />
             </ProtectedRoute>
           }
         />

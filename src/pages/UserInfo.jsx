@@ -31,7 +31,7 @@ export default function UserInfo() {
   function leave() {
     localStorage.removeItem("reduxState");
     dispatch(clearToken());
-    navigate("/login");
+    navigate("/register");
   }
 
   return (

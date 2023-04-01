@@ -1,5 +1,5 @@
 import React from "react";
-import Product from "../components/Product";
+import Product from "../components/MyProduct";
 import Skeleton from "../components/Skeleton";
 import logoSvg from "../assets/img/v987-11a.jpg";
 import logo from "../assets/img/icons8-user-100.png";
@@ -39,7 +39,6 @@ export default function Home() {
     queryFn: getProducts,
   });
 
-  const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i} />);
 
   return (
     <>
@@ -108,7 +107,7 @@ export default function Home() {
 
               <div className="content__items">
                 {isLoading
-                  ? skeletons
+                  ? <Skeleton />
                   : items?.products?.map((obj) => {
                       return <Product key={obj._id} obj={obj} />;
                     })}

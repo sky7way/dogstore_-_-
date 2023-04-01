@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Product from "../components/Product";
+import MyProduct from "../components/MyProduct";
 import CategoryEmpty from "../components/ProdcutsEmpty";
 import { selectAllIds } from "../redux/slices/likeReducer";
 import { useQuery } from "@tanstack/react-query";
@@ -51,7 +51,7 @@ export default function Favorites() {
       </div>
       <div className="content__items content__items--my">
         {data?.map((obj) => {
-          return <Product key={obj.value._id} obj={obj.value} />;
+          return <MyProduct key={obj.value._id} obj={obj.value} />;
         })}
       </div>
     </div>

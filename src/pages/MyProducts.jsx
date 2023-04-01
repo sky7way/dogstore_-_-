@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Product from "../components/Product";
+import MyProduct from "../components/MyProduct";
 import CategoryEmpty from "../components/ProdcutsEmpty";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert } from "../utils/errorAlert";
@@ -71,7 +71,7 @@ export default function MyProducts() {
       </div>
       <div className="content__items">
         {myProd?.map((obj) => {
-          return <Product key={obj._id} obj={obj} />;
+          return <MyProduct key={obj._id} obj={obj} />;
         })}
       </div>
     </div>
