@@ -33,7 +33,7 @@ export default function SignIn() {
         navigate("/");
       },
       onError: (response) => {
-        errorAlert("Произошла ошибка");
+        errorAlert("Неверный логин или пароль");
       },
     });
   };

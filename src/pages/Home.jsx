@@ -45,7 +45,9 @@ export default function Home() {
       <div className="header">
         <div className="container">
           <div className="header__logo">
+          <Link to={"/"}>
             <img width="38" src={logoSvg} alt="dog logo" />
+            </Link>
             <div>
               <h1>Dog Store</h1>
               <p>самые лучшие товары для собак</p>
