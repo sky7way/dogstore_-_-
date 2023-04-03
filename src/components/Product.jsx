@@ -14,6 +14,7 @@ import {
 } from "../redux/slices/likeReducer";
 import Review from "./Review";
 import { errorAlert } from "../utils/errorAlert";
+import { clearSearch } from "../redux/slices/searchReducer";
 
 export default function Product() {
   const navigate = useNavigate();
@@ -55,7 +56,11 @@ export default function Product() {
           <img src={data?.pictures} alt="pizza" />
           <div>{data?.price} ₽</div>
           <div className="full__btn">
-            <Link to="/" className="button button--black">
+          <Link
+              to="/"
+              onClick={() => dispatch(clearSearch())}
+              className="button button--black"
+            >
               <span>Назад</span>
             </Link>
           </div>

@@ -69,8 +69,8 @@ export default function MyProducts() {
         </Link>
         <h2 className="content__title">Мои товары ({myProd.length})</h2>
         <Link to={"/newproduct"}>
-    <button className="bg-m">Добавить продукт</button>
-</Link>
+        <button className="bg-m">Добавить продукт</button>
+        </Link>
       </div>
       <div className="content__items">
         {myProd?.map((obj) => {

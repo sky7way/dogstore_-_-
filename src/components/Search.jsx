@@ -1,10 +1,11 @@
 import React, { useRef, useState, useMemo } from "react";
 import debounce from "lodash.debounce";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSearch, setSearch } from "../redux/slices/searchReducer";
 
 export default function Search() {
-  const [value, setValue] = useState("");
+  const search = useSelector((state) => state.search.search);
+  const [value, setValue] = useState(search || "");
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 

@@ -1,4 +1,3 @@
-import React from "react";
 import Product from "../components/MyProduct";
 import Skeleton from "../components/Skeleton";
 import logoSvg from "../assets/img/v987-11a.jpg";
