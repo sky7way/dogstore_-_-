@@ -11,14 +11,14 @@ export default function Search() {
   // const memoSearch = useCallback(
   //   debounce((value) => {
   //     dispatch(setSearch(value));
-  //   }, 500),
+  //   }, 1000),
   //   []
   // );
 
   const memoSearch = useMemo(
     () => debounce(value => {
      dispatch(setSearch(value));
-   }, 500),
+   }, 1000),
    [dispatch]
  );
 

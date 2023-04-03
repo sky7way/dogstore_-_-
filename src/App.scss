@@ -803,6 +803,13 @@ p {
   color: rgb(175, 111, 37);
 }
 
+.bg-m {
+  background-color: $background;
+  color: rgb(175, 111, 37);
+  position: relative;
+  left: 1270px; 
+}
+
 .discount {
   color: black;
 }
@@ -838,4 +845,3 @@ p {
   top: 50%;
   left: 50%;
 }
-
