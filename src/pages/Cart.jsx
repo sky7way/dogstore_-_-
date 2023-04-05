@@ -51,7 +51,7 @@ export default function Cart() {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["cartproducts"],
+    queryKey: ["cartproducts", ids],
     queryFn: getAllCartProducts,
   });
 

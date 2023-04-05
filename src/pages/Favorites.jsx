@@ -29,7 +29,7 @@ export default function Favorites() {
   };
 
   const { data, isError } = useQuery({
-    queryKey: ["favoriteproducts"],
+    queryKey: [ ids],
     queryFn: getAllFavoriteProducts,
   });
 

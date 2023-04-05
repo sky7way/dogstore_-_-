@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
-export default function Review({ author, rating, text }) {
+export default function Review({ author, rating, text, maxRating = 5 }) {
   const token = useSelector((state) => state.user.token);
 
   const getAuthor = async () => {
@@ -21,11 +21,24 @@ export default function Review({ author, rating, text }) {
     return responce;
   };
 
+  const getRatingStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < maxRating; i++) {
+      if (i < rating) {
+        stars.push(`\u2605`);
+      } else {
+        stars.push("");
+      }
+    }
+    return stars;
+  };
+
   const { data, isError } = useQuery({
     queryKey: ["author", author],
     queryFn: getAuthor,
   });
 
+  
   return (
     <div className="review">
       {isError ? (
@@ -36,7 +49,7 @@ export default function Review({ author, rating, text }) {
         <>
           <div className="review__top">
             <div className="review__author">Автор: {data?.name}</div>
-            <div className="review__rate">Оценка: {rating}</div>
+            <div className="review__rate"> {getRatingStars(rating).join("")} </div>
           </div>
           <div className="review__bottom">
             <div className="review__text">{text}</div>
